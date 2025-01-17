@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Azin Piran">
+<meta name="dcterms.date" content="2025-01-17">
+
+<title>Airline Passenger Satisfaction Prediction – Blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Airline Passenger Satisfaction Prediction</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Machin Learning</div>
+                <div class="quarto-category">code</div>
+                <div class="quarto-category">analysis</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Azin Piran </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 17, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="predicting-airline-passenger-satisfaction" class="level1">
+<h1>Predicting Airline Passenger Satisfaction</h1>
+<p>In this blog, we’ll explore a comprehensive analysis and modeling process aimed at predicting the satisfaction of airline passengers. We’ll delve into data preprocessing, feature engineering, and model evaluation, ultimately identifying the best machine learning algorithm to predict passenger satisfaction. Here’s how we’ll break it down:</p>
+<section id="understanding-the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-problem">1. Understanding the Problem</h2>
+<p>The goal of this task is to predict whether a passenger is satisfied or dissatisfied with their flight experience. The dataset we’re using contains information like flight distances, seat comfort, online boarding, and various delays. By predicting satisfaction, we aim to provide valuable insights to airlines, helping them improve customer experience and operational efficiency.</p>
+</section>
+<section id="data-validation" class="level2">
+<h2 class="anchored" data-anchor-id="data-validation">2. Data Validation</h2>
+<p>Before diving into the machine learning preprocessing, we need to ensure that the data is valid, consistent, and ready for analysis. Below are the essential data validation steps we performed during the data preprocessing phase. The data validation process included:</p>
+<ul>
+<li><strong>Missing Value Detection and Imputation</strong></li>
+<li><strong>Outlier Detection</strong></li>
+<li><strong>Data Type Validation</strong></li>
+<li><strong>Correct Category Levels</strong></li>
+<li><strong>Checking Duplicates</strong></li>
+<li><strong>Target Variable Analysis</strong></li>
+</ul>
+</section>
+<section id="exploring-the-dataset-eda" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-the-dataset-eda">3. Exploring the Dataset (EDA)</h2>
+<p>We begin by examining the dataset to understand its structure. This dataset contains both numerical and categorical features related to passenger experiences. Some features include:</p>
+<ul>
+<li><strong>Gender</strong> (categorical)</li>
+<li><strong>Flight distance</strong> (numerical)</li>
+<li><strong>Seat comfort</strong> (ordinal)</li>
+<li><strong>Departure delay</strong> (numerical)</li>
+<li><strong>Satisfaction</strong> (binary target variable: 0 = Dissatisfied, 1 = Satisfied)</li>
+</ul>
+<p>We need to explore the relationships between these features and how they relate to the satisfaction of passengers.</p>
+<section id="data-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="data-visualization">Data Visualization:</h3>
+<p>We Plot histograms or boxplots for all numerical features to check their distribution and identify any outliers.</p>
+<center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="numerical-feature-distirbution.png" class="img-fluid figure-img"></p>
+<figcaption>Numerical Feature Distirbution</figcaption>
+</figure>
+</div>
+</center>
+<p>The numeric variables except age are mostly right skewed. So, most of them are not close to normal distribution. Additionally, for some ordinal categorical variables like seat_comfort, on_board_service and inflight_entertainment there are very little observations having value of 0. We may need to handle those observations later.</p>
+<p>WE also used count plots to visualize the distribution of ordinal features, such as seat comfort, inflight wifi service, and others, by satisfaction. This allows us to identify any potential patterns or differences in satisfaction levels across these features.</p>
+<center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="cat_feat_target_plots.png" class="img-fluid figure-img"></p>
+<figcaption>Categorical Feature Target Plots</figcaption>
+</figure>
+</div>
+</center>
+</section>
+<section id="correlation-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-analysis">Correlation Analysis:</h3>
+<p>Check how numerical features correlate with each other, and see if there are any strong correlations. This can be done using a correlation matrix and visualized with a heatmap.</p>
+<center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="correlation_matrix.png" class="img-fluid figure-img"></p>
+<figcaption>Correlation Matrix</figcaption>
+</figure>
+</div>
+</center>
+<p>Some features have high correlation suggesting multicollinearity. Departure Delay in Minutes vs.&nbsp;Arrival Delay in Minutes are very high correlated features (anomalous correlation, which suggests they both contain the same information, so one of them can be deleted).</p>
+</section>
+</section>
+<section id="data-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="data-preprocessing">4. Data Preprocessing</h2>
+<p>Data preprocessing is a crucial step in any machine learning project, and we follow these steps to ensure our dataset is ready for modeling:</p>
+<ul>
+<li><p><strong>Removing Irrelevant Features:</strong> We remove the <code>arrival_delay_in_minutes</code> column due to its high correlation with <code>departure_delay_in_minutes</code>.</p></li>
+<li><p><strong>Encoding Categorical Variables:</strong> We use one-hot encoding to convert categorical features like gender, customer_type, and type_of_travel into numerical representations. The satisfaction column is encoded as a binary variable (0 for dissatisfied, 1 for satisfied).</p></li>
+<li><p><strong>Scaling Numerical Features:</strong> Features such as age, flight_distance, and departure_delay_in_minutes are standardized using <code>StandardScaler</code>. We scale ordinal features like seat_comfort using <code>MinMaxScaler</code> to bring them to a similar scale, ensuring no feature dominates the others during model training.</p></li>
+</ul>
+<p>The preprocessing pipeline is implemented using <code>ColumnTransformer</code> from scikit-learn. Here’s how the pipeline is structured:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> make_column_transformer</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, MinMaxScaler, StandardScaler</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> make_column_transformer(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    (OneHotEncoder(handle_unknown<span class="op">=</span><span class="st">'ignore'</span>), categorical_cols),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    (MinMaxScaler(), ordinal_cols),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    (StandardScaler(), numerical_cols),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'drop'</span>, drop_cols)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="modeling" class="level2">
+<h2 class="anchored" data-anchor-id="modeling">4. Modeling</h2>
+<p>Now that the data is preprocessed, we can move on to modeling. Our problem is a binary classification problem, and we’ll evaluate different models to see which performs best.</p>
+<section id="baseline-model-dummy-classifier" class="level3">
+<h3 class="anchored" data-anchor-id="baseline-model-dummy-classifier">Baseline Model (Dummy Classifier)</h3>
+<p>We begin by setting a baseline model using DummyClassifier. This classifier predicts the majority class (the most frequent class in the dataset), which helps us establish a baseline accuracy.The baseline model has an accuracy of 56.4%, which corresponds to the percentage of the majority class (dissatisfied passengers) in the dataset.</p>
+</section>
+<section id="comparison-models" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-models">Comparison Models</h3>
+<p>We compare the results of our models, including the baseline DummyClassifier, Logistic Regression, and Decision Tree. The results include metrics such as accuracy, precision, recall, and F1-score for both training and validation data.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>fit_time</th>
+<th>score_time</th>
+<th>validation_accuracy</th>
+<th>train_accuracy</th>
+<th>validation_precision</th>
+<th>train_precision</th>
+<th>validation_recall</th>
+<th>train_recall</th>
+<th>validation_f1</th>
+<th>train_f1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>dummy</td>
+<td>0.134 (+/- 0.011)</td>
+<td>0.472 (+/- 0.017)</td>
+<td>0.564 (+/- 0.000)</td>
+<td>0.564 (+/- 0.000)</td>
+<td>0.318 (+/- 0.000)</td>
+<td>0.318 (+/- 0.000)</td>
+<td>0.564 (+/- 0.000)</td>
+<td>0.564 (+/- 0.000)</td>
+<td>0.407 (+/- 0.000)</td>
+<td>0.407 (+/- 0.000)</td>
+</tr>
+<tr class="even">
+<td>Logistic Regression</td>
+<td>0.338 (+/- 0.015)</td>
+<td>0.475 (+/- 0.025)</td>
+<td>0.874 (+/- 0.003)</td>
+<td>0.874 (+/- 0.001)</td>
+<td>0.874 (+/- 0.003)</td>
+<td>0.874 (+/- 0.001)</td>
+<td>0.874 (+/- 0.003)</td>
+<td>0.874 (+/- 0.001)</td>
+<td>0.874 (+/- 0.003)</td>
+<td>0.874 (+/- 0.001)</td>
+</tr>
+<tr class="odd">
+<td>Decision Tree</td>
+<td>0.519 (+/- 0.024)</td>
+<td>0.489 (+/- 0.020)</td>
+<td>0.945 (+/- 0.001)</td>
+<td>1.000 (+/- 0.000)</td>
+<td>0.946 (+/- 0.001)</td>
+<td>1.000 (+/- 0.000)</td>
+<td>0.945 (+/- 0.001)</td>
+<td>1.000 (+/- 0.000)</td>
+<td>0.945 (+/- 0.001)</td>
+<td>1.000 (+/- 0.000)</td>
+</tr>
+</tbody>
+</table>
+<p>As shown in the table, Decision Tree outperforms the other models in terms of accuracy and other evaluation metrics. Although it overfits to the training data, the decision tree’s interpretability makes it an excellent candidate for further <strong>tuning</strong>.</p>
+</section>
+</section>
+<section id="hyperparameter-tuning-with-grid-search" class="level2">
+<h2 class="anchored" data-anchor-id="hyperparameter-tuning-with-grid-search">4. Hyperparameter Tuning with Grid Search</h2>
+<p>Since decision trees tend to overfit, we use Grid Search to tune the hyperparameters and reduce overfitting, specifically by adjusting the <code>max_depth</code> parameter.And by exploring different values for <code>max_depth</code>, we can find an optimal configuration that balances model complexity and performance.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">5. Conclusion</h2>
+<p>In this evaluation, the decision tree model demonstrated strong performance, achieving an impressive test accuracy of 95.25%. The <strong>Classification Report</strong> showed high precision, recall, and F1-scores, especially for the “neutral or dissatisfied” class (recall of 97%). This indicates the model’s robust ability to identify dissatisfied passengers with minimal false negatives. The model’s ability to maintain balanced performance across both classes, with macro and weighted average scores of 95%, highlights its generalization capabilities.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 16%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Neutral or Dissatisfied</th>
+<th>Satisfied</th>
+<th>Accuracy</th>
+<th>Macro Avg</th>
+<th>Weighted Avg</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.944092757</td>
+<td>0.95861063</td>
+<td>0.950223283</td>
+<td>0.951351693</td>
+<td>0.950438458</td>
+</tr>
+<tr class="even">
+<td>0.968950896</td>
+<td>0.926105337</td>
+<td>0.950223283</td>
+<td>0.947528117</td>
+<td>0.950223283</td>
+</tr>
+<tr class="odd">
+<td>0.956360323</td>
+<td>0.942077678</td>
+<td>0.950223283</td>
+<td>0.949219</td>
+<td>0.950117439</td>
+</tr>
+<tr class="even">
+<td>14622</td>
+<td>11354</td>
+<td>0.950223283</td>
+<td>25976</td>
+<td>25976</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>Confusion Matrix</strong> revealed that while the model performs well overall, there are areas to enhance, such as reducing false positives for the “satisfied” class. Adjusting the decision threshold or rebalancing the data could improve recall for this class.</p>
+<center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="confusion_matrix.png" class="img-fluid figure-img"></p>
+<figcaption>Confusion Matrix</figcaption>
+</figure>
+</div>
+</center>
+<p>The Precision-Recall and ROC curves also reinforced the model’s consistency and effectiveness in distinguishing between “satisfied” and “neutral or dissatisfied” passengers, with a high AUC score of 0.98.</p>
+<center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ROC-curve.png.png" class="img-fluid figure-img"></p>
+<figcaption>ROC Curve</figcaption>
+</figure>
+</div>
+</center>
+</section>
+<section id="summary-and-final-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="summary-and-final-thoughts">6. Summary and Final Thoughts</h2>
+<p>In summary, the decision tree model offers a reliable tool for predicting passenger satisfaction with US airlines. With further fine-tuning, additional feature exploration, and interpretability methods, it can be improved to provide even more accurate and actionable insights for the airline industry.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">7.References</h2>
+<ol type="1">
+<li>D, John. 2018. “Passenger Satisfaction.” <a href="https://www.kaggle.com/datasets/johndddddd/customer-satisfaction">Kaggle Dataset</a>.</li>
+<li>Eshaghi, M. Sadegh, Mona Afshardoost, Gui Lohmann, and Brent D. Moyle. 2024. “Drivers and Outcomes of Airline Passenger Satisfaction: A Meta-Analysis.” <em>Journal of the Air Transport Research Society</em> 3: 100034. <a href="https://doi.org/10.1016/j.jatrs.2024.100034">DOI</a>.</li>
+<li>Hunter, J. D. 2007. “Matplotlib: A 2D Graphics Environment.” <em>Computing in Science &amp; Engineering</em> 9 (3): 90–95. <a href="https://doi.org/10.1109/MCSE.2007.55">DOI</a>.</li>
+<li>Klein, TJ. 2020. “Airline Passenger Satisfaction.” <a href="https://www.kaggle.com/datasets/teejmahal20/airline-passenger-satisfaction">Kaggle Dataset</a>.</li>
+<li>McKinney, Wes. 2010. “Data Structures for Statistical Computing in Python.” In <em>Proceedings of the 9th Python in Science Conference</em>, edited by Stéfan van der Walt and Jarrod Millman, 51–56.</li>
+<li>Namukasa, J. 2013. “The Influence of Airline Service Quality on Passenger Satisfaction and Loyalty: The Case of Uganda Airline Industry.” <em>The TQM Journal</em> 25 (5): 520–32. <a href="https://doi.org/10.1108/TQM-11-2012-0092">DOI</a>.</li>
+<li>Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, et al.&nbsp;2011. “Scikit-Learn: Machine Learning in Python.” <em>Journal of Machine Learning Research</em> 12: 2825–30.</li>
+<li>Van Rossum, Guido, and Fred L Drake Jr.&nbsp;1995. <em>Python Reference Manual</em>. Centrum voor Wiskunde en Informatica Amsterdam.</li>
+</ol>
+</section>
+<section id="appendix" class="level2">
+<h2 class="anchored" data-anchor-id="appendix">8.Appendix:</h2>
+<section id="reproducibility" class="level3">
+<h3 class="anchored" data-anchor-id="reproducibility">Reproducibility</h3>
+<p>Ensuring the reproducibility of our project is essential for transparency and for others to be able to replicate and build upon our work. Below, we outline the key elements that make this project reproducible.</p>
+<section id="our-repository" class="level4">
+<h4 class="anchored" data-anchor-id="our-repository"><a href="[link](https://github.com/UBC-MDS/airline-customer-satisfaction-predictor)">Our Repository</a></h4>
+</section>
+<section id="usage" class="level4">
+<h4 class="anchored" data-anchor-id="usage">Usage</h4>
+<p>To run the analysis in a dedicated computational environment set up using Docker, please follow these steps:</p>
+<p><strong>Step 1</strong>: Clone the repository Outlined are 2 options for cloning the repository- through https or ssh.</p>
+<blockquote class="blockquote">
+<p><strong>Note:</strong> The instructions contained in this section assume the commands are executed in a unix-based shell.</p>
+</blockquote>
+<p>Using Https:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/UBC-MDS/airline-customer-satisfaction-predictor.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Using SSH:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:UBC-MDS/airline-customer-satisfaction-predictor.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Step 2</strong>: Setup Docker Computational Environment</p>
+<ol type="1">
+<li><p><strong>Navigate to the root directory of the project</strong>: <br>In the terminal/command line navigate to the root directory of your local copy of this project. <code>bash     cd &lt;repo_directory&gt;</code></p></li>
+<li><p><strong>Launch the docker container image for the computational environment</strong>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The terminal logs should display an output similar to: <strong>Jupyter Server 2.14.2 is running at:</strong></li>
+<li>Locate the URL starting with <code>http://127.0.0.1:8888/lab?token=</code> and click (or copy and paste in the browser) on the http address in the logs to access the Jupyter application from your web browser. <br>Example link: <code>http://127.0.0.1:8888/lab?token=9f22c04a7fe732fdb2d2d98f1c2c0b74a89a5a6a1d60b45b</code></li>
+</ul></li>
+</ol>
+<p><strong>Step 3</strong>: Run the Analysis</p>
+<p>The first method (<strong>Recommended</strong>):</p>
+<p>In the root directory of the project run the following:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> all</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The Makefile will run all the necessary files to generate the results and the report. This is the recommended option because it checks if all the dependencies have generated for each consecutive step.</p>
+<p>Additionally, if you want to erase everything generated, you can run the following:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> clean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
+</section>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
