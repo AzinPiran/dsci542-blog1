@@ -1,13 +1,27 @@
 ---
 title: "Welcome To My Blog"
-author: "Tristan O'Malley"
-date: "2025-01-14"
+author: "Azin Piran"
+date: "2025-07-25"
 categories: [news]
 ---
 
-This is the first post in a Quarto blog. Welcome!
+Hi, and welcome to my little corner of the internet!  
 
 ![](thumbnail.jpg)
 
-Since this post doesn't specify an explicit `image`, the first image in the post will be used in the listing page of posts.
-Azin is here
+
+I created this blog to document my journey in data science, analytics, and continuous learning. Over the years, I’ve worked in data engineering, business intelligence, and recently completed my Master of Data Science (MDS) at UBC. This blog is where I bring all of that together, sharing my experiences, learning in public, and connecting with others who are as passionate about data as I am.  
+
+
+
+
+## Why I Started This Blog  
+
+I strongly believe in the idea of **learning by sharing**. Writing about what I’m exploring not only helps me solidify my own understanding, but it also creates a space where others can learn alongside me.  
+ 
+
+## Let’s Learn Together!  
+
+Whether you’re a student, professional, or just curious about data, I hope you find something here that inspires you, teaches you something new, or encourages you to start your own experiments.  
+
+Thanks for stopping by and welcome again! Feel free to connect with me through the links below. Let’s explore, learn, and grow together. 

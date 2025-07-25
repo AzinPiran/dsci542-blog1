@@ -4,21 +4,49 @@
     "href": "posts/welcome/index.html",
     "title": "Welcome To My Blog",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts. Azin is here"
+    "text": "Hi, and welcome to my little corner of the internet!\nI created this blog to document my journey in data science, analytics, and continuous learning. Over the years, I’ve worked in data engineering, business intelligence, and recently completed my Master of Data Science (MDS) at UBC. This blog is where I bring all of that together, sharing my experiences, learning in public, and connecting with others who are as passionate about data as I am."
+  },
+  {
+    "objectID": "posts/welcome/index.html#why-i-started-this-blog",
+    "href": "posts/welcome/index.html#why-i-started-this-blog",
+    "title": "Welcome To My Blog",
+    "section": "Why I Started This Blog",
+    "text": "Why I Started This Blog\nI strongly believe in the idea of learning by sharing. Writing about what I’m exploring not only helps me solidify my own understanding, but it also creates a space where others can learn alongside me."
+  },
+  {
+    "objectID": "posts/welcome/index.html#lets-learn-together",
+    "href": "posts/welcome/index.html#lets-learn-together",
+    "title": "Welcome To My Blog",
+    "section": "Let’s Learn Together!",
+    "text": "Let’s Learn Together!\nWhether you’re a student, professional, or just curious about data, I hope you find something here that inspires you, teaches you something new, or encourages you to start your own experiments.\nThanks for stopping by and welcome again! Feel free to connect with me through the links below. Let’s explore, learn, and grow together."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Blog",
+    "title": "Think Data, Build Insights",
     "section": "",
-    "text": "Airline Passenger Satisfaction Prediction\n\n\n\n\n\n\nMachin Learning\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 17, 2025\n\n\nAzin Piran\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 14, 2025\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Welcome To My Blog\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJul 25, 2025\n\n\nAzin Piran\n\n\n\n\n\n\n\n\n\n\n\n\nAirline Passenger Satisfaction Prediction\n\n\n\nMachin Learning\n\ncode\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 17, 2025\n\n\nAzin Piran\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About Me",
     "section": "",
-    "text": "About this blog"
+    "text": "Hi, I’m Azin 👋. I’m a Senior Data Manager with a strong background in data engineering, analytics, and BI solutions. Recently, I completed my Master of Data Science (MDS) at UBC, where I specialized in data wrangling, statistical modeling, and cloud-based solutions. I’m passionate about turning complex data into actionable insights and building scalable data systems, especially in maritime operations."
+  },
+  {
+    "objectID": "about.html#about-this-blog",
+    "href": "about.html#about-this-blog",
+    "title": "About Me",
+    "section": "About This Blog",
+    "text": "About This Blog\nThis blog is a space where I share data science tutorials and technical insights, document my learning journey and projects, and provide practical tips drawn from real-world data challenges. It’s also where I explore new ideas and experiments in data, while showcasing my skills and knowledge as I continue to learn and grow alongside other data enthusiasts. Whether you’re a data professional, a student, or simply curious about the field, I hope you’ll find something helpful and inspiring here!"
+  },
+  {
+    "objectID": "about.html#lets-connect",
+    "href": "about.html#lets-connect",
+    "title": "About Me",
+    "section": "Let’s Connect",
+    "text": "Let’s Connect\nI’d love to connect, collaborate, or discuss data-driven solutions.\nCheck out my profiles below."
   },
   {
     "objectID": "posts/Airline Passenger Satisfaction Prediction/index.html",

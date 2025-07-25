@@ -1,5 +1,5 @@
 ---
-title: "Blog"
+title: "Think Data, Build Insights"
 listing:
   contents: posts
   sort: "date desc"
